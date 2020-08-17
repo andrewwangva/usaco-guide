@@ -41,6 +41,9 @@ const UserDataContext = createContext<{
   lastReadAnnouncement: string;
   setLastReadAnnouncement: (announcementID: string) => void;
 
+  test: string;
+  setTest: (x: string) => void;
+
   firebaseUser: any;
   signIn: Function;
   signOut: Function;
@@ -125,6 +128,7 @@ export const UserDataProvider = ({ children }) => {
     [key: string]: ProblemProgress;
   }>({});
   const [lastViewedModule, setLastViewedModule] = useState<string>(null);
+  const [test, setTest] = useState<string>('START');
   const [lastReadAnnouncement, setLastReadAnnouncement] = useState<string>(
     null
   );
@@ -170,6 +174,7 @@ export const UserDataProvider = ({ children }) => {
                       userProgressOnProblems,
                       lastViewedModule,
                       lastReadAnnouncement,
+                      test,
                     },
                     { merge: true }
                   );
@@ -185,6 +190,7 @@ export const UserDataProvider = ({ children }) => {
               setUserProgressOnModules(data.userProgressOnModules || {});
               setUserProgressOnProblems(data.userProgressOnProblems || {});
               setLastReadAnnouncement(data.lastReadAnnouncement || null);
+              setTest(data.test);
             });
           }
         });
@@ -289,6 +295,18 @@ export const UserDataProvider = ({ children }) => {
           JSON.stringify(announcementID)
         );
         setLastReadAnnouncement(announcementID);
+      },
+      test,
+      setTest: x => {
+        if (firebaseUser) {
+          console.log('SETTING TEST EQUAL TO ', x);
+          firebase.firestore().collection('users').doc(firebaseUser.uid).set(
+            {
+              test: x,
+            },
+            { merge: true }
+          );
+        }
       },
       firebaseUser,
       signIn: () => {

@@ -45,7 +45,14 @@ export default function DashboardPage(props: PageProps) {
     lastReadAnnouncement,
     setLastReadAnnouncement,
     firebaseUser,
+    test,
+    setTest,
   } = React.useContext(UserDataContext);
+  React.useEffect(() => {
+    console.log('SETTING TEST');
+    console.log('CURRENT VALUE OF TEST', test);
+    setTest(test + 'ADDING');
+  }, [test]);
   const lastViewedModuleURL = moduleIDToURLMap[lastViewedModuleID];
   const activeModules: ActiveItem[] = React.useMemo(() => {
     return Object.keys(userProgressOnModules)
@@ -129,6 +136,7 @@ export default function DashboardPage(props: PageProps) {
                 {firebaseUser
                   ? `Signed in as ${firebaseUser.email}.`
                   : `Not signed in.`}
+                {`TEST: ${test}`}
               </p>
               <div className="flex overflow-x-auto">
                 <WelcomeBackBanner
