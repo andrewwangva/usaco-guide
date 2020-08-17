@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useRef } from 'react';
 import { graphql, PageProps } from 'gatsby';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
@@ -48,11 +49,18 @@ export default function DashboardPage(props: PageProps) {
     test,
     setTest,
   } = React.useContext(UserDataContext);
+  const initialRender = React.useRef(true);
   React.useEffect(() => {
-    console.log('SETTING TEST');
-    console.log('CURRENT VALUE OF TEST', test);
-    setTest(test + 'ADDING');
-  }, [test]);
+    if (initialRender.current && firebaseUser) {
+      console.log('OK');
+      console.log('SETTING TEST');
+      console.log('CURRENT VALUE OF TEST:', test);
+      console.log(firebaseUser ? 'YES' : 'NO');
+      // setTest("HUH")
+      setTest(test + 'ADDING');
+      initialRender.current = false;
+    }
+  }, [firebaseUser, test]);
   const lastViewedModuleURL = moduleIDToURLMap[lastViewedModuleID];
   const activeModules: ActiveItem[] = React.useMemo(() => {
     return Object.keys(userProgressOnModules)

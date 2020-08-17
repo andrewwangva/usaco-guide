@@ -298,14 +298,17 @@ export const UserDataProvider = ({ children }) => {
       },
       test,
       setTest: x => {
+        console.log('SETTING TEST');
         if (firebaseUser) {
-          console.log('SETTING TEST EQUAL TO ', x);
+          console.log('OK, SETTING TEST EQUAL TO', x);
           firebase.firestore().collection('users').doc(firebaseUser.uid).set(
             {
               test: x,
             },
             { merge: true }
           );
+        } else {
+          console.log('FIREBASE USER NOT FOUND');
         }
       },
       firebaseUser,
@@ -335,6 +338,7 @@ export const UserDataProvider = ({ children }) => {
       lastReadAnnouncement,
       firebaseUser,
       firebase,
+      test,
     ]
   );
 
