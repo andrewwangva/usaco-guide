@@ -51,13 +51,16 @@ export default function DashboardPage(props: PageProps) {
   } = React.useContext(UserDataContext);
   const initialRender = React.useRef(true);
   React.useEffect(() => {
-    if (initialRender.current && firebaseUser) {
+    if (initialRender.current && firebaseUser && test != 'START') {
       console.log('OK');
       console.log('SETTING TEST');
       console.log('CURRENT VALUE OF TEST:', test);
       console.log(firebaseUser ? 'YES' : 'NO');
-      // setTest("HUH")
-      setTest(test + 'ADDING');
+      if (test == null) {
+        setTest('ADD');
+      } else {
+        setTest(test + 'ADD');
+      }
       initialRender.current = false;
     }
   }, [firebaseUser, test]);
