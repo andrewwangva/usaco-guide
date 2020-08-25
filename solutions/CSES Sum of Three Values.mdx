@@ -9,49 +9,39 @@ author: Andrew Wang
 
 **Time Complexity:** $\mathcal{O}(N^2)$
 
-This problem is an extension of the two sum problem except now with three values. We can set the third pointer to a certain value in the array and then the problem becomes the two sum problem discussed earlier in this module. We'll first sort the array, then we'll loop through all possible values for the third pointer and check if all three pointers add up to out target amount, $x$, while having distinct positions. We can maintain the original positions of all values by storing them as a pair with the value being the first value and the position being in the second value.
+This problem is an extension of the two sum problem except now with three values. We can set the third pointer to a certain value in the array and then the problem becomes the two sum problem discussed earlier in this module. We'll first sort the array, then we'll loop through all possible values for the third pointer and check if all three pointers add up to out target amount, $x$, while having distinct positions. We can maintain the original positions of all values by storing them as a pair with the value in the array being the first value and the position being in the second value.
 
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
-using vi = vector<int>;
-#define pb push_back
-#define rsz resize
-#define all(x) begin(x), end(x)
-#define sz(x) (int)(x).size()
-using pi = pair<int,int>;
-#define f first
-#define s second
-#define mp make_pair
-void setIO(string name = "") { // name is nonempty for USACO file I/O
-    ios_base::sync_with_stdio(0); cin.tie(0); // see Fast Input & Output
-    if(sz(name)){
-        freopen((name+".in").c_str(), "r", stdin); // see Input & Output
-        freopen((name+".out").c_str(), "w", stdout);
-    }
-}
-
-ll dp[1000001];
-
-const int MOD = (int) 1e9 + 7;
 
 int main(){
-    int n, x; cin >> n >> x;
-    vi coins(n);
-    for (int i = 0; i < n; i++) {
-        cin >> coins[i];
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    int n,x; cin >> n >> x;
+    vector<pair<int, int>> arr;
+    for(int i = 1; i <= n; i++){
+        int a; cin >> a;
+        pair<int, int> p; p.first = a; p.second = i; //first in pair represents value, second represents index
+        arr.push_back(p);
     }
-    dp[0] = 1;
-    for (int i = 1; i <= n; i++) {
-        for (int weight = 0; weight <= x; weight++) {
-            if(weight - coins[i - 1] >= 0) {
-                dp[weight] += dp[weight - coins[i - 1]];
-                dp[weight] %= MOD;
+    sort(begin(arr), end(arr));
+    for(int i = 0; i < n; i++){
+        int l, r; l = 0; r = n-1;
+        while(l != r){
+            int target; target = x - arr.at(i).first;
+            if(l != i && r != i && arr.at(l).first + arr.at(r).first == target){
+                cout << arr.at(i).second << " " << arr.at(l).second << " " << arr.at(r).second << endl;
+                return 0;
+            }
+            if(arr.at(l).first + arr.at(r).first < target){
+                l++;
+            }
+            else{
+                r--;
             }
         }
     }
-    cout << dp[x] << '\n';
+    cout << "IMPOSSIBLE" << endl;
 }
 ```
