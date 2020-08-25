@@ -3,16 +3,12 @@ id: cses-1636
 title: CSES Sum of Three Values
 author: Andrew Wang
 ---
+**Time Complexity:** $\mathcal{O}(mk\log (mk))$
+This problem is an extension of the two sum problem except now with three values. We can set the third value to a certain value in the array and then the problem becomes the two sum problem discussed earlier in this module. We'll loop through all possible values for the third value and check if all three pointers add up to out target amount, $x$, while having distinct positions. We can maintain the original positions of all values by storing them as a pair with the value being the first value and the position being in the second position/\.
 
-This problem is an extension of the two sum problem, with the main difference being that we only count ordered combinations. This is also a well-known problem called the Ordered Coin Change problem, which can also be found in [CPH Chapter 7](https://usaco-guide.vercel.app/CPH.pdf) under "Counting the Number of Solutions".
+# Solution
 
-This editorial assumes you've solved Coin Combinations I. If not, the editorial can be found [here](/solutions/cses-1635). For this problem, we'll use the same state and transitions as Coin Combinations I.
 
-# Dealing with Ordered Ways
-
-To only count ordered ways, we switch the order of the loops. Since we loop over the coins before the weights in the dp array, it's impossible to create two combinations with the same coins ordered differently, because the order that we update the weights using the coins is the order we loop over them.
-
-<!-- I'm terrible at explaining, can someone edit above? -->
 
 ```cpp
 #include <bits/stdc++.h>
