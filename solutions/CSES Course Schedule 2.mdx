@@ -1,0 +1,60 @@
+---
+id: cses-1681
+title: CSES Course Schedule 2
+author: Andrew Wang
+---
+
+**Time Complexity:** $\mathcal{O}(NlogN)$
+We notice this problem is similar to the problem "Course Schedule" but with the diffrence being, instead of sorting it lexigraphically, we need to make sure course 1
+happens as soon as possible, and if there are several ways to do this, we want to complete course 2 as soon as poissble and so on. Notice this is different than 
+sorting lexigraphically due to the possiblility of having larger numbers come first as long as the course we're currently taking into consideration is as soon as
+possible. 
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+int n;
+vector<int> edge[100001];
+vector<int> backedge[100001];
+long ans = 0;
+int main(){
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    int m; cin >> n >> m;
+    int in_degree[n+1]; long dp[n+1];
+    for(int i = 0; i <= n; i++){
+        in_degree[i] = 0;
+        dp[i] = 0;
+    }
+    dp[1] = 1;
+    for(int i = 0; i < m; i++){
+        int a,b; cin >> a >> b;
+        edge[a].push_back(b);
+        backedge[b].push_back(a);
+        in_degree[b]++;
+    }
+    //uses Kahn's algorithm
+    queue<int> q;
+    for(int i = 0; i < n; i++) {
+        if(in_degree[i] == 0) {
+            q.push(i);
+        }
+    }
+
+    while(!q.empty()) {
+        int node = q.front();
+        q.pop();
+        for(int next : edge[node]) {
+            in_degree[next]--;
+            if(in_degree[next] == 0) q.push(next);
+        }
+
+        for(int prev : backedge[node]) {
+            dp[node] = (dp[node] + dp[prev]) % 1000000007;
+        }
+    }
+    cout << dp[n] << endl;
+    return 0;
+}
+```
