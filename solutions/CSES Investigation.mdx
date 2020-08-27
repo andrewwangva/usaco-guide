@@ -12,11 +12,13 @@ If we can reach the $u$ in a shorter distance than it's current minimum, we upda
 to take into consideration if we can reach $u$ with an equivalent distant. If so, we update:
 
 $$
+
 num[u] = num[v] + num[u]
 
 minf[u] = min(minf[u], minf[v] + 1)
 
 maxf[u] = max(maxf[u], maxf[v] + 1)
+
 $$
 
 ```cpp
