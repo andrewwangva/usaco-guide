@@ -12,17 +12,13 @@ it's neighbors, $u$. If we can reach the $u$ in a shorter distance than it's cur
 We also have to take into consideration if we can reach $u$ with an equivalent distant. If so, we update:
 
 $$
-num[u] = num[v] + num[u],
+num[u] = num[v] + num[u]
 minf[u] = min(minf[u], minf[v] + 1)
 maxf[u] = max(maxf[u], maxf[v] + 1)
 $$
 
 ```cpp
-#include <iostream>
-#include <vector>
-#include <unordered_set>
-#include <stack>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 typedef long long ll;
