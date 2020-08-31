@@ -11,7 +11,7 @@ painted white. Similarily, let $dp_1[v]$ represent the number of ways the subtre
 
 ## Painted White
 
-The number of ways to paint a subtree such that the root node is painted white is the product of all the ways to paint each subtree. In other words,
+The number of ways to paint a subtree such that the root node is painted white is the product of the ways to paint the child subtrees. The number of ways to paint a child subtree is the sum of how to paint it white and how to paint it black or, $dp_0[u] + dp_1[u]$. So the transitions are,
 
 $$
 dp_0[v] = \prod_{u \in child(v)} dp_0[u]+ dp_1[u]
@@ -20,7 +20,7 @@ $$
 ## Painted Black
 
 Since no two adjacent nodes can both be painted black, if the root node of the subtree is painted black, none of its children can be painted black. The number of
-ways to paint a subtree such that the root node is painted black is the product of all the ways the subtree can be painted white. 
+ways to paint a subtree such that the root node is painted black is the product of all the ways the child subtrees can be painted white. 
 
 $$
 dp_1[v] = \prod_{u \in child(v)} dp_0[u]
