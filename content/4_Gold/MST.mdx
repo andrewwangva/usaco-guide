@@ -86,7 +86,11 @@ To review a couple of terms:
 ### Solution - Road Reparation
 
 <LanguageSection>
+Kruskal's Algorithm finds the MST by greedily adding edges. For all edges not yet in the MST, we can repeatedly add the edge of minimum weight to the MST except when adding edges that would forms a cycle. This can be done by sorting the edges in order of non-decreasing weight. Furthermore, we can easily determine whether adding an edge will create a cycle in constant time using Union Find. Note that since the most expensive operation is sorting the edges, the computational complexity of Kruskal's Algorithm is $O(E \log E)$. 
 
+To see why this will always work, assume that we are trying to add edge $e$, which connects vertices $u$ and $v$, to the MST. If the only path between $u$ and $v$ is through $e$, then adding $e$ cannot form a cycle, and Kruskal will add $e$ to the MST. However, assume that another path from $u$ to $v$ exists. This path consists of a sequence of edges. By Kruskal, any of these edges with weight less than $e$ are already in the MST. If all of these edges have weight less than the weight of $e$, then we skip over $e$ since adding it would create a cycle. Otherwise, note that $e$ has a lower weight than any of the edges in this path that are not yet in the MST, so adding $e$ is optimal.
+
+Although Kruskals is usually a little slower than Prim's, the implementation for it is much easier.
 <CPPSection>
 
 <Resources>
@@ -114,91 +118,7 @@ template<class T> T kruskal(int N, vector<pair<T,pi>> ed) {
 
 <JavaSection>
 	
-```java
-import java.io.*; 
-import java.util.*; 
- 
-public class prim{
-   public static Map<Integer, ArrayList<Edge>> tree;
-   public static int N, ct;
-   public static long[] dist;
-   public static long max = 10000000000000000L;
-   public static void main(String[] args) throws IOException
-   {
-      BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
-      PrintWriter out = new PrintWriter(System.out);
-      StringTokenizer st = new StringTokenizer(sc.readLine());
-      N = Integer.parseInt(st.nextToken());
-      int M = Integer.parseInt(st.nextToken());
-      tree = new HashMap<Integer, ArrayList<Edge>>();
-      for(int i = 1; i <= N; i++){
-         tree.put(i, new ArrayList<Edge>());
-      }
-      for(int m = 0; m < M; m++){
-         st = new StringTokenizer(sc.readLine());
-         int a = Integer.parseInt(st.nextToken());
-         int b = Integer.parseInt(st.nextToken());
-         int w = Integer.parseInt(st.nextToken());
-         tree.get(a).add(new Edge(a,b,w));
-         tree.get(b).add(new Edge(b,a,w));
-      }
-      long ans = prim(1);
-      out.println((ct == N) ? ans : "IMPOSSIBLE");
-      out.close();
-   }
-   public static long prim(int source){
-      dist = new long[N+1];
-      boolean[] visited= new boolean[N+1];
-      PriorityQueue<Pair> pq = new PriorityQueue<Pair>();
-      Arrays.fill(dist, max);
-      dist[source] = 0;
-      long ret = 0;
-      pq.add(new Pair(0, source));
-      while(!pq.isEmpty()){
-         Pair p = pq.poll();
-         int v = p.b;
-         if(visited[v]){
-            continue;
-         }
-         visited[v] = true; ct++; ret += dist[v];
-         for(Edge e : tree.get(v)){
-            if(e.weight < dist[e.end] && !visited[e.end]){
-               dist[e.end] = e.weight;
-               pq.add(new Pair(dist[e.end], e.end));
-            }
-         }
-      }
-      return ret;
-   }
-}
-class Edge{
-   int start, end, weight;
-   public Edge(int s, int e, int w){
-      start = s;
-      end = e;
-      weight = w;
-   }
-}
-class Pair implements Comparable<Pair>{
-   public long a;
-   public int b;
-   public Pair(long a, int b){
-      this.a = a;
-      this.b = b;
-   }
-   public int compareTo(Pair o){
-      if(this.a > o.a){
-         return 1;
-      }
-      else if(this.a == o.a){
-         return 0;
-      }
-      else{
-         return -1;
-      }
-   }
-}
-```
+
 </JavaSection>
 </LanguageSection>
 
