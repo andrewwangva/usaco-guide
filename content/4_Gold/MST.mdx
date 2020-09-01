@@ -83,14 +83,15 @@ To review a couple of terms:
 		description, example, explanation of correctness
 	</Resource> -->
 
-### Solution - Road Reparation
-
-<LanguageSection>
 Kruskal's Algorithm finds the MST by greedily adding edges. For all edges not yet in the MST, we can repeatedly add the edge of minimum weight to the MST except when adding edges that would forms a cycle. This can be done by sorting the edges in order of non-decreasing weight. Furthermore, we can easily determine whether adding an edge will create a cycle in constant time using Union Find. Note that since the most expensive operation is sorting the edges, the computational complexity of Kruskal's Algorithm is $O(E \log E)$. 
 
 To see why this will always work, assume that we are trying to add edge $e$, which connects vertices $u$ and $v$, to the MST. If the only path between $u$ and $v$ is through $e$, then adding $e$ cannot form a cycle, and Kruskal will add $e$ to the MST. However, assume that another path from $u$ to $v$ exists. This path consists of a sequence of edges. By Kruskal, any of these edges with weight less than $e$ are already in the MST. If all of these edges have weight less than the weight of $e$, then we skip over $e$ since adding it would create a cycle. Otherwise, note that $e$ has a lower weight than any of the edges in this path that are not yet in the MST, so adding $e$ is optimal.
 
 Although Kruskals is usually a little slower than Prim's, the implementation for it is much easier.
+
+### Solution - Road Reparation
+
+<LanguageSection>
 <CPPSection>
 
 <Resources>
@@ -136,6 +137,10 @@ template<class T> T kruskal(int N, vector<pair<T,pi>> ed) {
 	</Resource>
 </Resources>
 
+Rather than greedily adding edges, Prim's algorithm greedily adds vertices, similar to Djikstras. On each iteration, we add the vertex that is closest to the current MST(Instead of closest to the source in Djikstra) until all vertices have been added. The process of finding the closest vertex to the MST can be done efficiently using a priority queue in $O(\log N)$ . After removing a vertex, we add all of its neighbors that are not yet in the MST to the priority queue and repeat. To begin the algorithm, we simply add any vertex to the priority queue. Note that Prim's algorithm has complexity $O(E \log E)$ since in the worst case every edge will be checked and its corresponding vertex will be added to the priority queue. However, this can be improved to $O(E \log V)$ if we were to update the distances of vertices rather than re-add them. This keeps the maximum size of the priority queue bounded at $V$. 
+
+Alternatively, we may linearly search for the closest vertex instead of using a priority queue. Each linear pass runs in time $O(V)$, and this must be repeated $V$ times. Thus, this version of Prim's algorithm has complexity $O(V^2)$. Note that this complexity is preferable for dense graphs (in which $E \approx V^2$). 
+
 ### Solution - Road Reparation
 
 <LanguageSection>
@@ -147,12 +152,6 @@ template<class T> T kruskal(int N, vector<pair<T,pi>> ed) {
 
 <JavaSection>
 	
-Rather than greedily adding edges, Prim's algorithm greedily adds vertices, similar to Djikstras. On each iteration, we add the vertex that is closest to the current MST(Instead of closest to the source in Djikstra) until all vertices have been added. The process of finding the closest vertex to the MST can be done efficiently using a priority queue in $O(\log N)$ . After removing a vertex, we add all of its neighbors that are not yet in the MST to the priority queue and repeat. To begin the algorithm, we simply add any vertex to the priority queue. Note that Prim's algorithm has complexity $O(E \log E)$ since in the worst case every edge will be checked and its corresponding vertex will be added to the priority queue. However, this can be improved to $O(E \log V)$ if we were to update the distances of vertices rather than re-add them. This keeps the maximum size of the priority queue bounded at $V$. 
-
-Alternatively, we may linearly search for the closest vertex instead of using a priority queue. Each linear pass runs in time $O(V)$, and this must be repeated $V$ times. Thus, this version of Prim's algorithm has complexity $O(V^2)$. Note that this complexity is preferable for dense graphs (in which $E \approx V^2$). 
-
-
-
 ```java
 import java.io.*; 
 import java.util.*; 
