@@ -137,7 +137,11 @@ template<class T> T kruskal(int N, vector<pair<T,pi>> ed) {
 	</Resource>
 </Resources>
 
-Rather than greedily adding edges, Prim's algorithm greedily adds vertices, similar to Djikstras. On each iteration, we add the vertex that is closest to the current MST(Instead of closest to the source in Djikstra) until all vertices have been added. The process of finding the closest vertex to the MST can be done efficiently using a priority queue in $O(\log N)$ . After removing a vertex, we add all of its neighbors that are not yet in the MST to the priority queue and repeat. To begin the algorithm, we simply add any vertex to the priority queue. Note that Prim's algorithm has complexity $O(E \log E)$ since in the worst case every edge will be checked and its corresponding vertex will be added to the priority queue. However, this can be improved to $O(E \log V)$ if we were to update the distances of vertices rather than re-add them. This keeps the maximum size of the priority queue bounded at $V$. 
+Similar to Djikstra's, Prim's algorithm greedily adds vertices. On each iteration, we add the vertex that is closest to the current MST (Instead of closest to the source in Djikstra's) until all vertices have been added. 
+
+The process of finding the closest vertex to the MST can be done efficiently using a priority queue in $O(\log N)$ . After removing a vertex, we add all of its neighbors that are not yet in the MST to the priority queue and repeat. To begin the algorithm, we simply add any vertex to the priority queue. 
+
+Note that Prim's algorithm has complexity $O(E \log E)$ since in the worst case every edge will be checked and its corresponding vertex will be added to the priority queue. However, this can be improved to $O(E \log V)$ if we were to update the distances of vertices rather than re-add them. This keeps the maximum size of the priority queue bounded at $V$. 
 
 Alternatively, we may linearly search for the closest vertex instead of using a priority queue. Each linear pass runs in time $O(V)$, and this must be repeated $V$ times. Thus, this version of Prim's algorithm has complexity $O(V^2)$. Note that this complexity is preferable for dense graphs (in which $E \approx V^2$). 
 
@@ -156,11 +160,11 @@ Alternatively, we may linearly search for the closest vertex instead of using a 
 import java.io.*; 
 import java.util.*; 
  
-public class prim{
-   public static Map<Integer, ArrayList<Edge>> tree;
-   public static int N, ct;
-   public static long[] dist;
-   public static long max = 10000000000000000L;
+class prim{
+   static Map<Integer, ArrayList<Edge>> tree;
+   static int N, ct;
+   static long[] dist;
+   static long max = 10000000000000000L;
    public static void main(String[] args) throws IOException
    {
       BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
@@ -168,15 +172,17 @@ public class prim{
       StringTokenizer st = new StringTokenizer(sc.readLine());
       N = Integer.parseInt(st.nextToken());
       int M = Integer.parseInt(st.nextToken());
+      
       tree = new HashMap<Integer, ArrayList<Edge>>();
-      for(int i = 1; i <= N; i++){
+      for (int i = 1; i <= N; i++){
          tree.put(i, new ArrayList<Edge>());
       }
-      for(int m = 0; m < M; m++){
+      for (int m = 0; m < M; m++){
          st = new StringTokenizer(sc.readLine());
          int a = Integer.parseInt(st.nextToken());
          int b = Integer.parseInt(st.nextToken());
          int w = Integer.parseInt(st.nextToken());
+      
          tree.get(a).add(new Edge(a,b,w));
          tree.get(b).add(new Edge(b,a,w));
       }
@@ -184,7 +190,7 @@ public class prim{
       out.println((ct == N) ? ans : "IMPOSSIBLE");
       out.close();
    }
-   public static long prim(int source){
+   static long prim(int source){
       dist = new long[N+1];
       boolean[] visited= new boolean[N+1];
       PriorityQueue<Pair> pq = new PriorityQueue<Pair>();
@@ -210,7 +216,7 @@ public class prim{
    }
 }
 class Edge{
-   int start, end, weight;
+   public int start, end, weight;
    public Edge(int s, int e, int w){
       start = s;
       end = e;
